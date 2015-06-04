@@ -9,7 +9,12 @@ class MessageController < ApplicationController
         render json: newmessage
       rescue ActionController::ParameterMissing => error
         render json: { error: error.message }, status: 422
+      end
     end
-  end
+
+    def diplay_last_minutes
+      begin
+        end
+
 
 end
