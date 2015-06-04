@@ -12,9 +12,17 @@ class MessageController < ApplicationController
       end
     end
 
-    def diplay_last_minutes
-      begin
-        end
+    # def diplay_last_minutes
+    #   begin
+    #     end
+    #   end
+    # end
 
+    def change_name(name)
+      Message.update
+    end
+
+    def top_ten
+    end
 
 end
