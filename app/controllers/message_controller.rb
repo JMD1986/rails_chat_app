@@ -28,6 +28,20 @@ class MessageController < ApplicationController
     render json: current_rooms
   end
 
+  def profile
+    user_profile =
+    Message.where(name: params.fetch(:name))
+    render json: user_profile
+  end
+
+  # def chat_bot
+  #   $all_posts.each do |row|
+  #     if row.text.contains?("chatbot time")
+  #       Message.create(text: I dont really do anything yet),
+  #                                 name: "Chatbot",
+  #                                 room: params.fetch(:room))
+
+  # end
 
   def create
     begin
