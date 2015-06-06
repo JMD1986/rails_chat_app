@@ -2,12 +2,11 @@ class MessageController < ApplicationController
 
 
 
-  def index
+  def main
     current_time = Time.now
     recent_posts = []
     all_posts = Message.all
     last_five_minutes = 300
-
     all_posts.each do |posts|
       if (current_time - posts.created_at) <= last_five_minutes
         recent_posts << posts
@@ -25,7 +24,7 @@ class MessageController < ApplicationController
 
   def top_ten_rooms
     all_posts = Message.all
-    top_ten_rooms = all_posts.group_by{ |row| row.room }
+    top_ten_rooms = all_posts.group_by{ |posts| row.room }
                              .sort_by{ |key, value| value.count }
                              .reverse.take(10)
                              .map { |post| post.first }
@@ -33,7 +32,18 @@ class MessageController < ApplicationController
 
   def create
     begin
-      newmessage = Message.create(text: params.fetch(:text), name: params.fetch(:name))
+      newmessage = Message.create(text: params.fetch(:text), name: params.fetch(:name), room: params.fetch(:room))
+      render json: newmessage
+    rescue ActionController::ParameterMissing => error
+      render json: { error: error.message }, status: 422
+    end
+  end
+
+
+
+  def createsalad
+    begin
+      newmessage = Message.create(text: params.fetch(:text), name: params.fetch(:name), room: "Salad")
       render json: newmessage
     rescue ActionController::ParameterMissing => error
       render json: { error: error.message }, status: 422

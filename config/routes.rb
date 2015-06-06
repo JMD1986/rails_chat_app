@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
 
   post "main", to: "message#create"
-  get "main", to: "message#index"
+  get "main", to: "message#main"
+
+  post "salad", to: "message#createsalad"
+  get "salad", to: "message#saladtalk"
 
   get "all_rooms", to: "message#all_rooms"
 
