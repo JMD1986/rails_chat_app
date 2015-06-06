@@ -3,35 +3,39 @@ class MessageController < ApplicationController
 
 
   def index
-    render json: Message.where(room: params[:room])
+    render json: Message.all
   end
 
-  def recent_messages
-    current_time = Time.now
-    recent_posts = []
-    all_posts = Message.all
-    last_five_minutes = 300
-    all_posts.each do |posts|
-      if (current_time - posts.created_at) <= last_five_minutes
-        recent_posts << posts
-      end
+  def create
+    begin
+      newmessage = Message.create(text: params.fetch(:text),
+                                  name: params.fetch(:name),
+                                  room: params.fetch(:room))
+      render json: newmessage
+    rescue ActionController::ParameterMissing => error
+      render json: { error: error.message }, status: 422
     end
   end
 
-  def all_rooms
-    all_posts = Message.all
-    current_rooms = []
-    all_posts.group_by { |row| row.room}
-    render json: current_rooms
+  def recent_messages
+    render json: Message.where(room: params[:room])
+                        .select { |posts| posts.created_at > (Time.now - 300) }
   end
 
-  def top_ten_rooms
-    all_posts = Message.all
-    top_ten_rooms = all_posts.group_by{ |posts| row.room }
-                             .sort_by{ |key, value| value.count }
-                             .reverse.take(10)
-                             .map { |post| post.first }
-  end
+  # def all_rooms
+  #   all_posts = Message.all
+  #   current_rooms = []
+  #   all_posts.group_by { |row| row.room}
+  #   render json: current_rooms
+  # end
+
+  # def top_ten_rooms
+  #   all_posts = Message.all
+  #   top_ten_rooms = all_posts.group_by{ |posts| row.room }
+  #                            .sort_by{ |key, value| value.count }
+  #                            .reverse.take(10)
+  #                            .map { |post| post.first }
+  # end
 
   def create
     begin

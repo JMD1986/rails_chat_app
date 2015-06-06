@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
 
   post "chat/:room", to: "message#create"
-  get "chat/:room", to: "message#index"
+  get  "chat/:room", to: "message#recent_messages"
+  get  "chat/", to: "message#index"
 
   get "all_rooms", to: "message#all_rooms"
 
