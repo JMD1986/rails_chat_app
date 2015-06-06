@@ -28,13 +28,6 @@ class MessageController < ApplicationController
     render json: current_rooms
   end
 
-  # def top_ten_rooms
-  #   all_posts = Message.all
-  #   top_ten_rooms = all_posts.group_by{ |posts| row.room }
-  #                            .sort_by{ |key, value| value.count }
-  #                            .reverse.take(10)
-  #                            .map { |post| post.first }
-  # end
 
   def create
     begin
@@ -58,9 +51,9 @@ class MessageController < ApplicationController
       recent_user_data = []
       # make cutoff time take argument
       # cut_off_time = 14400
-      $all_posts.each do |post|
-        if (Time.new - post.created_at) <= 14400
-          recent_user_data << post
+      $all_posts.each do |row|
+        if (Time.new - row.created_at) <= 14400
+          recent_user_data << row
         end
       end
         render json: recent_user_data
@@ -73,13 +66,22 @@ class MessageController < ApplicationController
     #   Message.where(name: params.fetch(:name)).present?
     # end
 
-  def top_ten
+  def top_ten_users
     top_ten_users = $all_posts.group_by{ |row| row.name }
-                             .sort_by{ |k,v| v.count }
+                             .sort_by{ |key, value| v.count }
                              .reverse.take(10)
                              .map { |post| post.first }
 
     render json: top_ten_users
+  end
+
+
+  def top_ten_rooms
+    top_ten_rooms = $all_posts.group_by{ |row| row.room }
+                             .sort_by{ |key, value| value.count }
+                             .reverse.take(10)
+                             .map { |post| post.first }
+    render json: top_ten_rooms
   end
 
 end
