@@ -1,9 +1,9 @@
 class MessageController < ApplicationController
 
-
+  $all_posts = Message.all
 
   def index
-    render json: Message.all
+    render json: $all_posts
   end
 
   def create
@@ -22,12 +22,11 @@ class MessageController < ApplicationController
                         .select { |posts| posts.created_at > (Time.now - 300) }
   end
 
-  # def all_rooms
-  #   all_posts = Message.all
-  #   current_rooms = []
-  #   all_posts.group_by { |row| row.room}
-  #   render json: current_rooms
-  # end
+  def all_rooms
+    current_rooms = []
+    $all_posts.group_by { |row| row.room}
+    render json: current_rooms
+  end
 
   # def top_ten_rooms
   #   all_posts = Message.all
@@ -39,7 +38,9 @@ class MessageController < ApplicationController
 
   def create
     begin
-      newmessage = Message.create(text: params.fetch(:text), name: params.fetch(:name), room: params.fetch(:room))
+      newmessage = Message.create(text: params.fetch(:text),
+                                  name: params.fetch(:name),
+                                  room: params.fetch(:room))
       render json: newmessage
     rescue ActionController::ParameterMissing => error
       render json: { error: error.message }, status: 422
@@ -55,10 +56,10 @@ class MessageController < ApplicationController
     begin
       current_time = Time.now
       recent_user_data = []
-      all_posts = Message.all      # make cutoff time take argument
-      cut_off_time = 14400
-      all_posts.each do |post|
-        if (current_time - post.created_at) <= cut_off_time
+      # make cutoff time take argument
+      # cut_off_time = 14400
+      $all_posts.each do |post|
+        if (Time.new - post.created_at) <= 14400
           recent_user_data << post
         end
       end
@@ -73,8 +74,7 @@ class MessageController < ApplicationController
     # end
 
   def top_ten
-    all_posts = Message.all
-    top_ten_users = all_posts.group_by{ |row| row.name }
+    top_ten_users = $all_posts.group_by{ |row| row.name }
                              .sort_by{ |k,v| v.count }
                              .reverse.take(10)
                              .map { |post| post.first }
