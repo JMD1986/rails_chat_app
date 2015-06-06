@@ -1,18 +1,15 @@
 Rails.application.routes.draw do
 
-  post "main", to: "message#create"
-  get "main", to: "message#main"
-
-  post "salad", to: "message#createsalad"
-  get "salad", to: "message#saladtalk"
+  post "chat/:room", to: "message#create"
+  get "chat/:room", to: "message#index"
 
   get "all_rooms", to: "message#all_rooms"
 
-  get "stats", to: "message#stats"
+  get "chat/stats", to: "message#stats"
 
-  get "recent_users", to: "message#recent_users"
+  get "chat/recent_users", to: "message#recent_users"
 
-  get "stats/top_ten", to: "message#top_ten"
+  get "chat/stats/top_ten", to: "message#top_ten"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

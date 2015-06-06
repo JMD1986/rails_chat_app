@@ -2,7 +2,11 @@ class MessageController < ApplicationController
 
 
 
-  def main
+  def index
+    render json: Message.where(room: params[:room])
+  end
+
+  def recent_messages
     current_time = Time.now
     recent_posts = []
     all_posts = Message.all
@@ -12,7 +16,6 @@ class MessageController < ApplicationController
         recent_posts << posts
       end
     end
-    render json: recent_posts
   end
 
   def all_rooms
@@ -39,16 +42,6 @@ class MessageController < ApplicationController
     end
   end
 
-
-
-  def createsalad
-    begin
-      newmessage = Message.create(text: params.fetch(:text), name: params.fetch(:name), room: "Salad")
-      render json: newmessage
-    rescue ActionController::ParameterMissing => error
-      render json: { error: error.message }, status: 422
-    end
-  end
 
     # A list of users who have posted a message in the last four hours.
     # Bonus points if you can make the four hour window configurable so
