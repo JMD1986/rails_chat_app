@@ -63,7 +63,7 @@ class MessageController < ApplicationController
 
   def top_ten_users
     top_ten_users = $all_posts.group_by{ |row| row.name }
-                              .sort_by{ |key, value| v.count }
+                              .sort_by{ |key, value| value.count }
                               .reverse.take(10)
                               .map { |row| row.first }
     render json: top_ten_users
