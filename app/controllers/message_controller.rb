@@ -1,5 +1,7 @@
 class MessageController < ApplicationController
 
+
+
   def index
     current_time = Time.now
     recent_posts = []
@@ -14,9 +16,16 @@ class MessageController < ApplicationController
     render json: recent_posts
   end
 
+  def all_rooms
+    all_posts = Message.all
+    current_rooms = []
+    all_posts.group_by { |row| row.room}
+    render json: current_rooms
+  end
+
   def create
     begin
-      newmessage = Message.create(text: params.fetch(:text), name: params.fetch(:name))
+      newmessage = Message.create(text: params.fetch(:text), name: params.fetch(:name), room: params.fetch(:room))
       render json: newmessage
     rescue ActionController::ParameterMissing => error
       render json: { error: error.message }, status: 422
