@@ -32,7 +32,7 @@ class MessageController < ApplicationController
       current_time = Time.now
       recent_user_data = []
       all_posts = Message.all      # make cutoff time take argument
-      cut_off_time = 14400
+      cut_off_time = 300
       all_posts.each do |post|
         if (current_time - post.created_at) <= cut_off_time
           recent_user_data << post
