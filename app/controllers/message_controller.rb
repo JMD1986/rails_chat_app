@@ -50,7 +50,11 @@ class MessageController < ApplicationController
 
   def top_ten
     all_posts = Message.all
-    top_ten_users = all_posts.group(:name)
+    top_ten_users = all_posts.group_by{ |row| row.name }
+                             .sort_by{ |k,v| v.count }
+                             .reverse.take(10)
+                             .map { |post| post.first }
+
     render json: top_ten_users
   end
 
