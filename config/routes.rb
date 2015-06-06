@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
+
   post "main", to: "message#create"
   get "main", to: "message#index"
+
+  get "stats", to: "message#stats"
+
+  get "leaderboard", to: "message#recent_users"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
