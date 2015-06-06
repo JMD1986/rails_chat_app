@@ -23,9 +23,17 @@ class MessageController < ApplicationController
     render json: current_rooms
   end
 
+  def top_ten_rooms
+    all_posts = Message.all
+    top_ten_rooms = all_posts.group_by{ |row| row.room }
+                             .sort_by{ |key, value| value.count }
+                             .reverse.take(10)
+                             .map { |post| post.first }
+  end
+
   def create
     begin
-      newmessage = Message.create(text: params.fetch(:text), name: params.fetch(:name), room: params.fetch(:room))
+      newmessage = Message.create(text: params.fetch(:text), name: params.fetch(:name))
       render json: newmessage
     rescue ActionController::ParameterMissing => error
       render json: { error: error.message }, status: 422
