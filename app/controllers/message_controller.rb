@@ -31,7 +31,7 @@ class MessageController < ApplicationController
     begin
       current_time = Time.now
       recent_user_data = []
-      all_posts = Message.group(:id, :name)      # make cutoff time take argument
+      all_posts = Message.all      # make cutoff time take argument
       cut_off_time = 14400
       all_posts.each do |post|
         if (current_time - post.created_at) <= cut_off_time
@@ -50,6 +50,8 @@ class MessageController < ApplicationController
 
   def top_ten
     all_posts = Message.all
+    top_ten_users = all_posts.group(:name)
+    render json: top_ten_users
   end
 
 end

@@ -5,9 +5,10 @@ Rails.application.routes.draw do
 
   get "stats", to: "message#stats"
 
-  get "leaderboard", to: "message#recent_users"
+  get "recent_users", to: "message#recent_users"
 
-  get "top_ten", to: "message#top_ten"
+  get "stats/top_ten", to: "message#top_ten"
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
