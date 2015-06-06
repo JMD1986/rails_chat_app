@@ -47,7 +47,6 @@ class MessageController < ApplicationController
 
   def recent_users
     begin
-      current_time = Time.now
       recent_user_data = []
       # make cutoff time take argument
       # cut_off_time = 14400
@@ -62,25 +61,20 @@ class MessageController < ApplicationController
       end
     end
 
-    # def change_name
-    #   Message.where(name: params.fetch(:name)).present?
-    # end
-
   def top_ten_users
     top_ten_users = $all_posts.group_by{ |row| row.name }
-                             .sort_by{ |key, value| v.count }
-                             .reverse.take(10)
-                             .map { |post| post.first }
-
+                              .sort_by{ |key, value| v.count }
+                              .reverse.take(10)
+                              .map { |row| row.first }
     render json: top_ten_users
   end
 
 
   def top_ten_rooms
     top_ten_rooms = $all_posts.group_by{ |row| row.room }
-                             .sort_by{ |key, value| value.count }
-                             .reverse.take(10)
-                             .map { |post| post.first }
+                              .sort_by{ |key, value| value.count }
+                              .reverse.take(10)
+                              .map { |row| row.first }
     render json: top_ten_rooms
   end
 

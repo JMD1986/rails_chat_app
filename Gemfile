@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'swearjar', '~> 1.0.0'
+# Put another nickel in the swearjar. Simple profanity detection with content analysis.
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
