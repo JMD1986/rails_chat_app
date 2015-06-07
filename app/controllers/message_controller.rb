@@ -6,65 +6,90 @@ class MessageController < ApplicationController
     render json: $all_posts
   end
 
-  def create
+  #version for multiple rooms
+  # def create
+  #   begin
+  #     newmessage = Message.create(text: params.fetch(:text),
+  #                                 name: params.fetch(:name),
+  #                                 room: params.fetch(:room))
+  #     render json: newmessage
+  #   rescue ActionController::ParameterMissing => error
+  #     render json: {error: error.message }, status: 422
+  #   end
+  # end
+
+  #version for only one room
+   def create
     begin
       newmessage = Message.create(text: params.fetch(:text),
-                                  name: params.fetch(:name),
-                                  room: params.fetch(:room))
+                                  name: params.fetch(:name),)
       render json: newmessage
     rescue ActionController::ParameterMissing => error
       render json: {error: error.message }, status: 422
     end
   end
 
+  #
   def recent_messages
-    recent_messages = Message.where(room: params[:room])
-                             .select {|row| row.created_at > (Time.now - 300) }
-    render json: recent_messages
+    begin
+      recent_messages = Message.where(room: params[:room])
+                               .select {|row| row.created_at > (Time.now - 300) }
+      render json: recent_messages
+    rescue ActionController::ParameterMissing => error
+      render json: {error: error.message }, status: 422
+    end
   end
-
-# will work on
-#   def chat_bot
-#     $all_posts.each do |row|
-#       if row.text.contains?("chatbot")
-#         Message.create(text: "It is #{Time.now}", name: "Chatbot", room: "main")
-# end
-#   end
 
   def recent_users
     begin
       recent_user_data = $all_posts.select { |row| row.created_at > (Time.now - 14400)}
-        render json: recent_user_data
-      rescue ActionController::ParameterMissing => error
-        render json: { error: error.message }, status: 422
-      end
+      render json: recent_user_data
+    rescue ActionController::ParameterMissing => error
+      render json: { error: error.message }, status: 422
     end
+  end
 
   def top_ten_users
-    top_users = $all_posts.group_by { |row| row.name }
-                              .sort_by { |key, value| value.count}
-                              .map{ |row| {name: row.first, count: row.last.count}}
-    render json: top_users.reverse.take(10)
+    begin
+      top_users = $all_posts.group_by { |row| row.name }
+                            .sort_by { |key, value| value.count}
+                            .map{ |row| {name: row.first, count: row.last.count}}
+      render json: top_users.reverse.take(10)
+    rescue ActionController::ParameterMissing => error
+      render json: {error: error.message }, status: 422
+    end
   end
 
   def top_ten_rooms
-    top_ten_rooms = $all_posts.group_by{ |row| row.room }
-                              .sort_by{ |key, value| value.count }
-                              .reverse.take(10)
-                              .map { |row| {room: row.first, posts: row.last.count} }
-    render json: top_ten_rooms.take(10)
+    begin
+      top_ten_rooms = $all_posts.group_by{ |row| row.room }
+                                .sort_by{ |key, value| value.count }
+                                .reverse.take(10)
+                                .map { |row| {room: row.first, posts: row.last.count} }
+      render json: top_ten_rooms.take(10)
+    rescue ActionController::ParameterMissing => error
+      render json: {error: error.message }, status: 422
+    end
   end
 
   def all_users
-    every_user =
-    $all_posts.group_by { |row| row.name}
-    .map { |row| row.first }
-    render json: every_user
+    begin
+      every_user =
+      $all_posts.group_by { |row| row.name}
+      .map { |row| row.first }
+      render json: every_user
+    rescue ActionController::ParameterMissing => error
+      render json: {error: error.message }, status: 422
+    end
   end
 
   def profile
-    user_profile_data = Message.where(name: params.fetch(:name))
-    user_profile_data
-    render json: user_profile_data
+    begin
+      user_profile_data = Message.where(name: params.fetch(:name))
+      user_profile_data
+      render json: user_profile_data
+    rescue ActionController::ParameterMissing => error
+      render json: {error: error.message }, status: 422
+    end
   end
 end
