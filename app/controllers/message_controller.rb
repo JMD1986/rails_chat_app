@@ -22,14 +22,12 @@ class MessageController < ApplicationController
                         .select { |posts| posts.created_at > (Time.now - 300) }
   end
 
-
   # def chat_bot
   #   $all_posts.each do |row|
   #     if row.text.contains?("chatbot time")
   #       Message.create(text: I dont really do anything yet),
   #                                 name: "Chatbot",
-  #                                 room: params.fetch(:room))
-
+  #                                 room: "main")
   # end
 
   def create
@@ -43,16 +41,9 @@ class MessageController < ApplicationController
     end
   end
 
-
-    # A list of users who have posted a message in the last four hours.
-    # Bonus points if you can make the four hour window configurable so
-    # that it can be easily changed in the future.
-
   def recent_users
     begin
       recent_user_data = []
-      # make cutoff time take argument
-      # cut_off_time = 14400
       $all_posts.each do |row|
         if (Time.new - row.created_at) <= 14400
           recent_user_data << row
@@ -64,28 +55,36 @@ class MessageController < ApplicationController
       end
     end
 
+  # def top_ten_users
+  #   top_ten_users = []
+  #   top_ten_users_names = $all_posts.group_by{ |row| row.name }
+  #                             .sort_by{ |key, value| value.count }
+  #                             .reverse.take(10)
+  #                             .map do |row|
+  #                               row.first
+  #                               row.last.count
+  #                             end
+
+  #   top_ten_user_post_count = $all_posts.group_by{ |row| row.name }
+  #                             .sort_by{ | key, value | value.count }
+  #                             .reverse.take(10)
+  #                             .map { |row| row.last }.count
+  #   render json: top_ten_users_names
+  # end
+
   def top_ten_users
-    # top_ten_users = {@top_ten_users_names => @top_ten_user_post_count}
-    top_ten_users = top_ten_users_names
-    @top_ten_users_names = $all_posts.group_by{ |row| row.name }
-                              .sort_by{ |key, value| value.count }
-                              .reverse.take(10)
-                              .map { |row| row.first }
-
-    @top_ten_user_post_count = $all_posts.group_by{ |row| row.name }
-                              .sort_by{ |key, value| value.count }
-                              .reverse.take(10)
-                              .map { |row| row.last }.count
-    render json: top_ten_users
+    top_users = $all_posts.group_by { |row| row.name }
+                              .sort_by { |key, value| value.count}
+                              .map{ |row| {name: row.first, count: row.last.count}}
+    render json: top_users.reverse.take(10)
   end
-
 
   def top_ten_rooms
     top_ten_rooms = $all_posts.group_by{ |row| row.room }
                               .sort_by{ |key, value| value.count }
                               .reverse.take(10)
-                              .map { |row| row.first }
-    render json: top_ten_rooms
+                              .map { |row| {room: row.first, posts: row.last.count} }
+    render json: top_ten_rooms.take(10)
   end
 
   def all_users
