@@ -18,11 +18,12 @@ class MessageController < ApplicationController
   end
 
   def recent_messages
-    render json: Message.where(room: params[:room])
-                        .select { |posts| posts.created_at > (Time.now - 300) }
+    recent_messages = Message.where(room: params[:room])
+                             .select {|row| row.created_at > (Time.now - 300) }
+    render json: recent_messages
   end
 
-# will work on this later
+# will work on
 #   def chat_bot
 #     $all_posts.each do |row|
 #       if row.text.contains?("chatbot")
@@ -32,12 +33,7 @@ class MessageController < ApplicationController
 
   def recent_users
     begin
-      recent_user_data = []
-      $all_posts.each do |row|
-        if (Time.now - row.created_at) <= 14400
-          recent_user_data << row
-        end
-      end
+      recent_user_data = $all_posts.select { |row| row.created_at > (Time.now - 14400)}
         render json: recent_user_data
       rescue ActionController::ParameterMissing => error
         render json: { error: error.message }, status: 422
@@ -71,11 +67,4 @@ class MessageController < ApplicationController
     user_profile_data
     render json: user_profile_data
   end
-
-  # def profile
-  #   current_profile =
-  #   # params.fetch(:name)
-  #   number_of_posts
-  #   render json: current_profile
-  # end
 end

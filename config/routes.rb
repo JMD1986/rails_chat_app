@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get "chat/stats", to: "message#stats"
 
   get "chat/recent_users", to: "message#recent_users"
+  get "stats/recent_users", to: "message#recent_users"
 
   get "stats/top_ten_users", to: "message#top_ten_users"
   get "stats/top_ten_rooms", to: "message#top_ten_rooms"
