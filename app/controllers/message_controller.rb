@@ -22,17 +22,6 @@ class MessageController < ApplicationController
                         .select { |posts| posts.created_at > (Time.now - 300) }
   end
 
-  def all_rooms
-    current_rooms = []
-    $all_posts.group_by { |row| row.room}
-    render json: current_rooms
-  end
-
-  def profile
-    user_profile =
-    Message.where(name: params.fetch(:name))
-    render json: user_profile
-  end
 
   # def chat_bot
   #   $all_posts.each do |row|
@@ -76,10 +65,17 @@ class MessageController < ApplicationController
     end
 
   def top_ten_users
-    top_ten_users = $all_posts.group_by{ |row| row.name }
+    # top_ten_users = {@top_ten_users_names => @top_ten_user_post_count}
+    top_ten_users = top_ten_users_names
+    @top_ten_users_names = $all_posts.group_by{ |row| row.name }
                               .sort_by{ |key, value| value.count }
                               .reverse.take(10)
                               .map { |row| row.first }
+
+    @top_ten_user_post_count = $all_posts.group_by{ |row| row.name }
+                              .sort_by{ |key, value| value.count }
+                              .reverse.take(10)
+                              .map { |row| row.last }.count
     render json: top_ten_users
   end
 
@@ -92,4 +88,28 @@ class MessageController < ApplicationController
     render json: top_ten_rooms
   end
 
+  def all_users
+    every_user =
+    $all_posts.group_by { |row| row.name}
+    .map { |row| row.first }
+    render json: every_user
+  end
+
+  def number_of_posts
+    user_profile =
+    Message.where(name: params.fetch(:name)).count
+    render json: user_profile
+  end
+
+  def profile
+    render json: Message.where(name: params.fetch(:name))
+  end
+
+
+  # def profile
+  #   current_profile =
+  #   # params.fetch(:name)
+  #   number_of_posts
+  #   render json: current_profile
+  # end
 end

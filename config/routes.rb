@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   get "stats/top_ten_rooms", to: "message#top_ten_rooms"
 
   get "profile/:name", to: "message#profile"
+  get "profile/", to: "message#all_users"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
