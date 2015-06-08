@@ -8,10 +8,9 @@ class MessageController < ApplicationController
 
   def create
     begin
-      newmessage = Message.create(text: Swearjar.default.censor(params.fetch(:text)),
+      newmessage = Message.create(text: params.fetch(:text),
                                   name: params.fetch(:name),
                                   room: params.fetch(:room))
-      newmessage
       render json: newmessage
     rescue ActionController::ParameterMissing => error
       render json: {error: error.message }, status: 422
@@ -25,8 +24,11 @@ class MessageController < ApplicationController
   end
 
   def recent_users
+    begin
       recent_user_data = $all_posts.select { |row| row.created_at > (Time.now - 14400)}
         render json: recent_user_data
+      rescue ActionController::ParameterMissing => error
+        render json: { error: error.message }, status: 422
       end
     end
 
@@ -54,13 +56,7 @@ class MessageController < ApplicationController
 
   def profile
     user_profile_data = Message.where(name: params.fetch(:name))
+    user_profile_data
     render json: user_profile_data
   end
-
-  def user_profile_info
-    user_profile_data = Message.where(name: params.fetch(:name))
-    render json: user_profile_data.each_with_index
-
-  end
-
 end
