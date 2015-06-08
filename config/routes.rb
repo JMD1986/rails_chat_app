@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get  "chat/:room", to: "message#recent_messages"
   # get  "chat/", to: "message#index"
 
+  # what is going on here?
   get "chat/recent_users", to: "message#recent_users"
   get "stats/recent_users", to: "message#recent_users"
   get "recent_users", to: "message#recent_users"

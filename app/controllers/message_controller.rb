@@ -26,7 +26,7 @@ class MessageController < ApplicationController
   def recent_users
     begin
       recent_user_data = $all_posts.select { |row| row.created_at > (Time.now - 14400)}
-        render json: recent_user_data
+        render json: recent_user_data.reverse.take(10)
       rescue ActionController::ParameterMissing => error
         render json: { error: error.message }, status: 422
       end
@@ -47,6 +47,7 @@ class MessageController < ApplicationController
     render json: top_ten_rooms.take(10)
   end
 
+  #should limit this if we scale up
   def all_users
     every_user =
     $all_posts.group_by { |row| row.name}

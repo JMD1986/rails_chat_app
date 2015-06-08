@@ -19,7 +19,15 @@ It contains pages of raw JSON values for easy information retrieval.
 
 *default showing of only posts from the last five minutes
 
+This program is currently hosted on Heroku at
 
+https://agile-plateau-2979.herokuapp.com
+
+a board showing the process for creating both the front and back end is available here
+
+https://trello.com/b/8s7wyHAf/chat-room
+
+a hackpad with various information is at chatapp.hackpad.com
 
 ```
 .
