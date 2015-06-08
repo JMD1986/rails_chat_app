@@ -6,12 +6,15 @@ Rails.application.routes.draw do
 
   get "chat/recent_users", to: "message#recent_users"
   get "stats/recent_users", to: "message#recent_users"
+  get "recent_users", to: "message#recent_users"
 
   get "stats/top_ten_users", to: "message#top_ten_users"
   get "stats/top_ten_rooms", to: "message#top_ten_rooms"
 
   get "profile/:name", to: "message#profile"
   get "profile/", to: "message#all_users"
+
+  # get "user_profile_info/:name", to: "message#user_profile_info"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

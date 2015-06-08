@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'obscenity', '~> 1.0.2'
-# Obscenity is a profanity filter gem for Ruby/Rubinius, Rails (through ActiveModel), and Rack middleware
+gem 'swear-jar', '~> 0.0.3'
+#SwearJar can clean up dirty text. Further functionality may come later.
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
