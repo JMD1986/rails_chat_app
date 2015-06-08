@@ -1,10 +1,9 @@
 class MessageController < ApplicationController
 
-
   $all_posts = Message.all
 
   def index
-    render json: Obscenity.sanitize($all_posts)
+    render json: $all_posts
   end
 
   #version for multiple rooms
@@ -83,21 +82,6 @@ class MessageController < ApplicationController
       render json: {error: error.message }, status: 422
     end
   end
-
-
-  # def bot_response
-  #   bot_reply = Message.new
-  #   case params.fetch(:text)
-  #   when "salad"
-  #     bot_reply.name = "Chatbot"
-  #     bot_reply.text = "I love salads"
-  #     bot_reply.save
-  #   when "help me"
-  #     bot_reply.name = "Chatbot"
-  #     bot_reply.text = "I only help those who help themselves"
-  #     bot_reply.save
-  #   end
-  # end
 
   def profile
     begin
