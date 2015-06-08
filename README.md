@@ -1,6 +1,23 @@
 # rails_chat_app
 
-This is the framework for a functional chat room setup.
+##This is the framework for a functional chat room setup.
+
+This is the backend framework. To see the frontend go to http://sydneyjlindsay.github.io/
+
+
+It contains pages of raw JSON values for easy information retrieval.
+
+##features
+
+*easily scalable code that makes creating new rooms as simple as typing /newroom
+
+*profile pages that can be accessed via profile/username
+
+*stats section that includes most popular rooms, number of posts, most active users, and total user posts.
+
+*list of users that have posted within the last four hours
+
+*default showing of only posts from the last five minutes
 
 
 

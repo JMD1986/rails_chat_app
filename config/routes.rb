@@ -2,11 +2,7 @@ Rails.application.routes.draw do
 
   post "chat/:room", to: "message#create"
   get  "chat/:room", to: "message#recent_messages"
-  get  "chat/", to: "message#index"
-
-  get "all_rooms", to: "message#all_rooms"
-
-  get "chat/stats", to: "message#stats"
+  # get  "chat/", to: "message#index"
 
   get "chat/recent_users", to: "message#recent_users"
   get "stats/recent_users", to: "message#recent_users"
@@ -16,8 +12,6 @@ Rails.application.routes.draw do
 
   get "profile/:name", to: "message#profile"
   get "profile/", to: "message#all_users"
-
-  get "leaderboard", to: "message#leaderboard_user_stats"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
