@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'swearjar', '~> 1.0.0'
-# Put another nickel in the swearjar. Simple profanity detection with content analysis.
+gem 'obscenity', '~> 1.0.2'
+# Obscenity is a profanity filter gem for Ruby/Rubinius, Rails (through ActiveModel), and Rack middleware
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
